@@ -1,0 +1,68 @@
+/* CompleteProfile.css */
+
+.profile-form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.profile-form h2 {
+  margin-bottom: 20px;
+  color: #4caf50;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+.profile-form label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.profile-form input,
+.profile-form select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.profile-form input:focus,
+.profile-form select:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+.profile-form button[type="submit"] {
+  margin-top: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.profile-form button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+@media (max-width: 600px) {
+  .profile-form {
+    padding: 20px;
+    margin: 20px;
+  }
+}

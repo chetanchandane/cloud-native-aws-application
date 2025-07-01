@@ -11,8 +11,7 @@ override.tf.json
 terraform.tfstate.backup
 
 node_modules/
-frontend
-frontend-v0
+
 .DS_Store
 
 
