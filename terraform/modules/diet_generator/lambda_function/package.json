@@ -1,0 +1,10 @@
+{
+  "name": "my-lambda-function",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "axios": "^1.8.4",
+    "uuid": "^9.0.1"
+  }
+}

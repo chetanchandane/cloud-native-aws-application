@@ -1,0 +1,10 @@
+variable "api_id" {}
+variable "root_resource_id" {}
+variable "api_execution_arn" {}
+variable "lambda_role_arn" {}
+variable "lambda_role_name" {}
+variable "bucket_name" {}
+variable "bucket_arn" {}
+variable "bucket_id" {}
+variable "nutritionix_api_key" {}
+variable "nutritionix_app_id" {}

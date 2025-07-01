@@ -1,0 +1,109 @@
+# setup github actions workflows.
+name: Deploy AWeSome Nutrition App
+
+# Trigger the workflow manually with inputs
+on: 
+    workflow_dispatch:
+        inputs:
+            action:
+                description: 'Terraform action to perform'
+                type: choice
+                options:
+                    - Terraform_apply
+                    - Terraform_destroy
+
+jobs:
+    terraform_apply:
+        name: "Terraform Apply"
+        # Run this job if the action input is 'Terraform_apply'
+        if: ${{ github.event.inputs.action == 'Terraform_apply' }}
+        runs-on: ubuntu-latest
+        env:
+                TF_VAR_github_token: ${{ secrets.GH_TOKEN }}
+                TF_VAR_nutritionix_api_key: ${{ vars.NUTRITIONIX_API_KEY }}
+                TF_VAR_nutritionix_app_id: ${{ vars.NUTRITIONIX_APP_ID }}
+                TF_VAR_openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+        
+        steps:
+            # Checkout the repository code
+            - name: Checkout repository-code
+              uses: actions/checkout@v2
+            
+            # Configure AWS credentials
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ vars.AWS_REGION }}  
+            
+            # Setup Terraform
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v1
+              with:
+                  terraform_version: 1.1.9
+            
+            # Initialize Terraform
+            - name: Terraform Init
+              run: terraform init
+              working-directory: terraform/            
+            
+            # Plan Terraform changes
+            - name: Terraform Plan
+              run: terraform plan -lock=false
+              working-directory: terraform/  
+
+            # Apply Terraform changes if on the main branch
+            - name: Terraform Apply
+              if: github.ref == 'refs/heads/main'
+              run: terraform apply -lock=false -auto-approve
+              working-directory: terraform/ 
+
+    
+    terraform_destroy: 
+        name: "Terraform Destroy"
+        # Run this job if the action input is 'Terraform_destroy'
+        if: ${{ github.event.inputs.action == 'Terraform_destroy' }}
+        runs-on: ubuntu-latest
+        env:
+          TF_VAR_github_token: ${{ secrets.GH_TOKEN }}
+          TF_VAR_nutritionix_api_key: ${{ vars.NUTRITIONIX_API_KEY }}
+          TF_VAR_nutritionix_app_id: ${{ vars.NUTRITIONIX_APP_ID }}   
+          TF_VAR_openai_api_key: ${{ secrets.OPENAI_API_KEY }}     
+        
+        steps: 
+            # Checkout the repository code
+            - name: Checkout repository-code
+              uses: actions/checkout@v2
+            
+            # Configure AWS credentials
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ vars.AWS_REGION }}  
+            
+            # Setup Terraform
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v1
+              with:
+                  terraform_version: 1.1.9
+            
+            # Initialize Terraform
+            - name: Terraform Init
+              run: terraform init
+              working-directory: terraform/             
+              
+            # Plan Terraform destruction
+            - name: Terraform Plan 
+              run: terraform plan -destroy -lock=false -var="github_token=${{ secrets.GH_TOKEN }}"
+              working-directory: terraform/ 
+             
+            
+            # Destroy Terraform resources if on the main branch
+            - name: Terraform Destroy
+              if: github.ref == 'refs/heads/main' 
+              run: terraform destroy -lock=false -auto-approve -var="github_token=${{ secrets.GH_TOKEN }}"
+              working-directory: terraform/ 
+
