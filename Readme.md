@@ -2,6 +2,9 @@
 
 An AI-powered serverless application that allows users to upload food images and receive real-time nutrition insights and personalized dietary recommendations.
 
+## Architecture Diagram
+![Architecture Diagram](/docs/architecture-diagram.png)
+
 ## 🚀 Features
 
 - 🖼️ Upload meal images via web interface
